@@ -9,4 +9,5 @@ class Texts {
   static const String SIGNUP = "Sign Up";
   static const String SIGNIN = "Sign In";
   static const String ALREADY_ACCOUNT = "Already have an account? ";
+  static const String NO_ACCOUNT = "Don't have an account? ";
 }
