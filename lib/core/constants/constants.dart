@@ -14,8 +14,9 @@ class Texts {
   static const String UNEXPECTED_ERROR = "omethin went wrong! Try again later.";
   static const String INVALID_CREDENTIALS =
       "Sorry ! Email or Password is wrong";
+  static const String ALL_FIELD_REQUIRED = "All fields are required";
 }
 
 class URLS {
-  static String? insData = "http://localhost:8000";
+  static String? insData = "http://127.0.0.1:8000";
 }

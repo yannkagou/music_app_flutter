@@ -37,55 +37,57 @@ class _SignupPageState extends State<SignupPage> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                Texts.SIGNUP_TITLE,
-                style: TextStyles.headerStyle,
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-              CustomField(
-                hintext: Texts.NAME,
-                controller: nameController,
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              CustomField(
-                hintext: Texts.EMAIL,
-                controller: emailController,
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              CustomField(
-                hintext: Texts.PASSWORD,
-                controller: passwordController,
-                isObscureText: true,
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              AuthGradientButton(text: Texts.SIGNUP, onTap: () {}),
-              SizedBox(
-                height: 15.h,
-              ),
-              RichText(
-                text: TextSpan(
-                    text: Texts.ALREADY_ACCOUNT,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: const [
-                      TextSpan(
-                          text: Texts.SIGNIN,
-                          style: TextStyle(
-                              color: Kcolors.gradient2,
-                              fontWeight: FontWeight.bold))
-                    ]),
-              )
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  Texts.SIGNUP_TITLE,
+                  style: TextStyles.headerStyle,
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                CustomField(
+                  hintext: Texts.NAME,
+                  controller: nameController,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                CustomField(
+                  hintext: Texts.EMAIL,
+                  controller: emailController,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                CustomField(
+                  hintext: Texts.PASSWORD,
+                  controller: passwordController,
+                  isObscureText: true,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                AuthGradientButton(text: Texts.SIGNUP, onTap: () {}),
+                SizedBox(
+                  height: 15.h,
+                ),
+                RichText(
+                  text: TextSpan(
+                      text: Texts.ALREADY_ACCOUNT,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      children: const [
+                        TextSpan(
+                            text: Texts.SIGNIN,
+                            style: TextStyle(
+                                color: Kcolors.gradient2,
+                                fontWeight: FontWeight.bold))
+                      ]),
+                )
+              ],
+            ),
           ),
         ),
       ),

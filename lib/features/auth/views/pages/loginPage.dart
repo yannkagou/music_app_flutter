@@ -1,9 +1,17 @@
 import 'package:client/core/constants/app_text_styles.dart';
 import 'package:client/core/constants/constants.dart';
 import 'package:client/core/constants/kColors.dart';
+import 'package:client/core/local_storage/sharedPref.dart';
+import 'package:client/core/ui_service/FormValidator.dart';
+import 'package:client/core/ui_service/circularProgressIndicator.dart';
+import 'package:client/core/ui_service/ui.dart';
+import 'package:client/features/auth/cubits/authCubit.dart';
+import 'package:client/features/auth/utils/errorMesageKeys.dart';
+import 'package:client/features/auth/utils/internetConnectivity.dart';
 import 'package:client/features/auth/views/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/views/widgets/custom_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,6 +26,14 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  SharedPreferencesServices service = SharedPreferencesServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -31,55 +47,88 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                Texts.SIGNIN_TITLE,
-                style: TextStyles.headerStyle,
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state is AuthFetchFailure) {
+            // showCustomSnackBar(Texts.ERROR, state.errorMessage);
+            const SnackBar(content: Text("Error"));
+          }
+        },
+        builder: (context, state) {
+          return Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      Texts.SIGNIN_TITLE,
+                      style: TextStyles.headerStyle,
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    CustomField(
+                      hintext: Texts.EMAIL,
+                      controller: emailController,
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    CustomField(
+                      hintext: Texts.PASSWORD,
+                      controller: passwordController,
+                      isObscureText: true,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    AuthGradientButton(text: Texts.SIGNIN, onTap: _submitForm),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                          text: Texts.NO_ACCOUNT,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          children: const [
+                            TextSpan(
+                                text: Texts.SIGNUP,
+                                style: TextStyle(
+                                    color: Kcolors.gradient2,
+                                    fontWeight: FontWeight.bold))
+                          ]),
+                    ),
+                    if (state is AuthFetchInProgress)
+                      showCircularProgress(true),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 30.h,
-              ),
-              CustomField(
-                hintext: Texts.EMAIL,
-                controller: emailController,
-              ),
-              SizedBox(
-                height: 15.h,
-              ),
-              CustomField(
-                hintext: Texts.PASSWORD,
-                controller: passwordController,
-                isObscureText: true,
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              AuthGradientButton(text: Texts.SIGNIN, onTap: () {}),
-              SizedBox(
-                height: 15.h,
-              ),
-              RichText(
-                text: TextSpan(
-                    text: Texts.NO_ACCOUNT,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: const [
-                      TextSpan(
-                          text: Texts.SIGNUP,
-                          style: TextStyle(
-                              color: Kcolors.gradient2,
-                              fontWeight: FontWeight.bold))
-                    ]),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  _submitForm() async {
+    FocusScope.of(context).unfocus();
+    String? accessToken = service.getAccessTokenFromSharedPref();
+    if (FormValidator.isEmptyFields(
+        [emailController.text, passwordController.text])) {
+      return;
+    }
+
+    if (await InternetConnectivity.isNetworkAvailable()) {
+      context.read<AuthCubit>().userLogin(
+          email: emailController.text, password: passwordController.text);
+      context.read<AuthCubit>().getUser(accessToken: accessToken);
+    } else {
+      // showCustomSnackBar(Texts.ERROR, ErrorMessageKeys.noInternet);
+      const SnackBar(content: Text("Error"));
+    }
   }
 }

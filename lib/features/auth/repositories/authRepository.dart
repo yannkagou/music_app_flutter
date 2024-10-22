@@ -17,4 +17,10 @@ class AuthRepository {
         await _authRemoteDataSource.login(email: email, password: password);
     return result;
   }
+
+  Future<dynamic> getUser({required accessToken}) async {
+    final result =
+        await _authRemoteDataSource.getUser(accessToken: accessToken);
+    return result;
+  }
 }

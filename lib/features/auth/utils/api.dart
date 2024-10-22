@@ -34,6 +34,7 @@ class ApiException implements Exception {
 class Api {
   static String login = "auth/token/login";
   static String register = "auth/users";
+  static String getUser = "auth/users/me";
 
   static Map<String, String> get headers => {
         "Accept": "application/json",
@@ -60,7 +61,54 @@ class Api {
       debugPrint("response =====>${response.data}");
       if (response.statusCode == 500) {
         debugPrint("APi exception msg - ${response.data}");
-        showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
+        // showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
+        const SnackBar(content: Text("Error"));
+        throw ApiException(response.data);
+      }
+      return response.data;
+    } on DioException catch (e) {
+      debugPrint("Dio Error - ${e.toString()}");
+      throw ApiException(e.error is SocketException
+          ? ErrorMessageKeys.noInternet
+          : ErrorMessageKeys.defaultErrorMessage);
+    } on SocketException catch (e) {
+      debugPrint("Socket exception - ${e.toString()}");
+      throw SocketException(e.message);
+    } on ApiException catch (e) {
+      debugPrint("APi Exception - ${e.toString()}");
+      throw ApiException(e.errorMessage);
+    } catch (e) {
+      debugPrint("catch exception- ${e.toString()}");
+      throw ApiException(ErrorMessageKeys.defaultErrorMessage);
+    }
+  }
+
+  static Future<dynamic> authenticatedPost(
+      {required Map<String, dynamic> body,
+      required String endpoint,
+      String? accessToken}) async {
+    try {
+      if (await InternetConnectivity.isNetworkAvailable() == false) {
+        throw const SocketException(ErrorMessageKeys.noInternet);
+      }
+      final Dio dio = Dio();
+      String _url = "${URLS.insData}/$endpoint";
+      debugPrint("Requested APi - $_url & params are $body");
+
+      final response = await dio.post(_url,
+          data: jsonEncode(body),
+          options: Options(headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Connection": "keep-alive",
+            "Authorization": "Token $accessToken"
+          }, responseType: ResponseType.json));
+      debugPrint("Requested APi status code - ${response.statusCode}");
+      debugPrint("response =====>${response.data}");
+      if (response.statusCode == 500) {
+        debugPrint("APi exception msg - ${response.data}");
+        // showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
+        const SnackBar(content: Text("Error"));
         throw ApiException(response.data);
       }
       return response.data;

@@ -19,6 +19,17 @@ class SharedPreferencesServices {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  setAccessToken(String accessToken) {
+    _prefs.setString("accessToken", accessToken);
+  }
+
+  String? getAccessTokenFromSharedPref() {
+    if (!_prefs.containsKey('accessToken')) {
+      return null;
+    }
+    return _prefs.get('accessToken') as String;
+  }
+
   setUserInSharedPref(User user) {
     _prefs.setString("user", json.encode(user.toMap()));
   }
