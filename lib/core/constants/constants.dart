@@ -10,4 +10,12 @@ class Texts {
   static const String SIGNIN = "Sign In";
   static const String ALREADY_ACCOUNT = "Already have an account? ";
   static const String NO_ACCOUNT = "Don't have an account? ";
+  static const String ERROR = "Error";
+  static const String UNEXPECTED_ERROR = "omethin went wrong! Try again later.";
+  static const String INVALID_CREDENTIALS =
+      "Sorry ! Email or Password is wrong";
+}
+
+class URLS {
+  static String? insData = "http://localhost:8000";
 }
