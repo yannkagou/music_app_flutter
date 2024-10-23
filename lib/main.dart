@@ -6,6 +6,7 @@ import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
                   create: (context) =>
                       AuthCubit(AuthRepository(), SharedPreferencesServices())),
             ],
-            child: MaterialApp(
+            child: GetMaterialApp(
               title: 'Flutter Demo',
               theme: AppTheme.darkThemeMode,
               home: const LoginPage(),

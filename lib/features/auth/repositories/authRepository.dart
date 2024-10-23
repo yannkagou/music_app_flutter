@@ -12,9 +12,9 @@ class AuthRepository {
   AuthRepository._internal();
 
   Future<dynamic> login(
-      {required String email, required String password}) async {
-    final result =
-        await _authRemoteDataSource.login(email: email, password: password);
+      {required String username, required String password}) async {
+    final result = await _authRemoteDataSource.login(
+        username: username, password: password);
     return result;
   }
 

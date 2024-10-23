@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-AccessToken loginResponseFromJson(String str) =>
+AccessToken accessTokenFromJson(String str) =>
     AccessToken.fromJson(json.decode(str));
 
-String loginResponseToJson(AccessToken data) => json.encode(data.toJson());
+String accessTokenToJson(AccessToken data) => json.encode(data.toJson());
 
 class AccessToken {
   final String authToken;

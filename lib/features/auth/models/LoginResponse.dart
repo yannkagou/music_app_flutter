@@ -35,24 +35,24 @@ class LoginResponse {
 
 class Data {
   String id;
-  String email;
+  String username;
   String? password;
 
   Data({
     required this.id,
-    required this.email,
+    required this.username,
     this.password,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
-        email: json["email"],
+        username: json["username"],
         password: json["password"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "email": email,
+        "username": username,
         "password": password,
       };
 }

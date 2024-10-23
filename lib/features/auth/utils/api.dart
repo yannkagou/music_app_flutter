@@ -32,9 +32,9 @@ class ApiException implements Exception {
 }
 
 class Api {
-  static String login = "auth/token/login";
-  static String register = "auth/users";
-  static String getUser = "auth/users/me";
+  static String login = "token/login";
+  static String register = "users";
+  static String getUser = "users/me";
 
   static Map<String, String> get headers => {
         "Accept": "application/json",
@@ -51,7 +51,7 @@ class Api {
         throw const SocketException(ErrorMessageKeys.noInternet);
       }
       final Dio dio = Dio();
-      String _url = "${URLS.insData}/$endpoint";
+      String _url = "${URLS.auth}/$endpoint";
       debugPrint("Requested APi - $_url & params are $body");
 
       final response = await dio.post(_url,
@@ -83,20 +83,19 @@ class Api {
     }
   }
 
-  static Future<dynamic> authenticatedPost(
-      {required Map<String, dynamic> body,
-      required String endpoint,
-      String? accessToken}) async {
+  static Future<dynamic> getMe(
+      {required String endpoint, String? accessToken}) async {
     try {
       if (await InternetConnectivity.isNetworkAvailable() == false) {
         throw const SocketException(ErrorMessageKeys.noInternet);
       }
       final Dio dio = Dio();
-      String _url = "${URLS.insData}/$endpoint";
-      debugPrint("Requested APi - $_url & params are $body");
+      String _url = "${URLS.auth}/$endpoint";
+      debugPrint("Requested APi - $_url");
 
-      final response = await dio.post(_url,
-          data: jsonEncode(body),
+      debugPrint("AccessToken APi - $accessToken");
+
+      final response = await dio.get(_url,
           options: Options(headers: {
             "Accept": "application/json",
             "Content-Type": "application/json; charset=UTF-8",

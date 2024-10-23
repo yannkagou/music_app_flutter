@@ -20,7 +20,7 @@ class SharedPreferencesServices {
   }
 
   setAccessToken(String accessToken) {
-    _prefs.setString("accessToken", accessToken);
+    _prefs.setString('accessToken', accessToken);
   }
 
   String? getAccessTokenFromSharedPref() {
@@ -31,7 +31,7 @@ class SharedPreferencesServices {
   }
 
   setUserInSharedPref(User user) {
-    _prefs.setString("user", json.encode(user.toMap()));
+    _prefs.setString('user', json.encode(user.toMap()));
   }
 
   User? getUserFromSharedPref() {

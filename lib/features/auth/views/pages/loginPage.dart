@@ -8,6 +8,7 @@ import 'package:client/core/ui_service/ui.dart';
 import 'package:client/features/auth/cubits/authCubit.dart';
 import 'package:client/features/auth/utils/errorMesageKeys.dart';
 import 'package:client/features/auth/utils/internetConnectivity.dart';
+import 'package:client/features/auth/views/pages/signupPage.dart';
 import 'package:client/features/auth/views/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/views/widgets/custom_field.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   SharedPreferencesServices service = SharedPreferencesServices();
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    emailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
     super.dispose();
     formKey.currentState!.validate();
@@ -72,8 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                       height: 30.h,
                     ),
                     CustomField(
-                      hintext: Texts.EMAIL,
-                      controller: emailController,
+                      hintext: Texts.USERNAME,
+                      controller: usernameController,
                     ),
                     SizedBox(
                       height: 15.h,
@@ -90,17 +91,25 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    RichText(
-                      text: TextSpan(
-                          text: Texts.NO_ACCOUNT,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          children: const [
-                            TextSpan(
-                                text: Texts.SIGNUP,
-                                style: TextStyle(
-                                    color: Kcolors.gradient2,
-                                    fontWeight: FontWeight.bold))
-                          ]),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignupPage()));
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                            text: Texts.NO_ACCOUNT,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            children: const [
+                              TextSpan(
+                                  text: Texts.SIGNUP,
+                                  style: TextStyle(
+                                      color: Kcolors.gradient2,
+                                      fontWeight: FontWeight.bold))
+                            ]),
+                      ),
                     ),
                     if (state is AuthFetchInProgress)
                       showCircularProgress(true),
@@ -118,16 +127,17 @@ class _LoginPageState extends State<LoginPage> {
     FocusScope.of(context).unfocus();
     String? accessToken = service.getAccessTokenFromSharedPref();
     if (FormValidator.isEmptyFields(
-        [emailController.text, passwordController.text])) {
+        [usernameController.text, passwordController.text])) {
       return;
     }
 
     if (await InternetConnectivity.isNetworkAvailable()) {
-      context.read<AuthCubit>().userLogin(
-          email: emailController.text, password: passwordController.text);
-      context.read<AuthCubit>().getUser(accessToken: accessToken);
+      await context.read<AuthCubit>().userLogin(
+            username: usernameController.text,
+            password: passwordController.text,
+          );
+      await context.read<AuthCubit>().getUser(accessToken: accessToken);
     } else {
-      // showCustomSnackBar(Texts.ERROR, ErrorMessageKeys.noInternet);
       const SnackBar(content: Text("Error"));
     }
   }

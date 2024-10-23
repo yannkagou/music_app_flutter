@@ -1,6 +1,7 @@
 import 'package:client/core/constants/app_text_styles.dart';
 import 'package:client/core/constants/constants.dart';
 import 'package:client/core/constants/kColors.dart';
+import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:client/features/auth/views/widgets/auth_gradient_button.dart';
 import 'package:client/features/auth/views/widgets/custom_field.dart';
 import 'package:flutter/material.dart';
@@ -74,17 +75,25 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(
                   height: 15.h,
                 ),
-                RichText(
-                  text: TextSpan(
-                      text: Texts.ALREADY_ACCOUNT,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      children: const [
-                        TextSpan(
-                            text: Texts.SIGNIN,
-                            style: TextStyle(
-                                color: Kcolors.gradient2,
-                                fontWeight: FontWeight.bold))
-                      ]),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()));
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                        text: Texts.ALREADY_ACCOUNT,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        children: const [
+                          TextSpan(
+                              text: Texts.SIGNIN,
+                              style: TextStyle(
+                                  color: Kcolors.gradient2,
+                                  fontWeight: FontWeight.bold))
+                        ]),
+                  ),
                 )
               ],
             ),

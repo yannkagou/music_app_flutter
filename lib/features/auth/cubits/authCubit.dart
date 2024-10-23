@@ -38,19 +38,27 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authRepository, this.service) : super(AuthInitial());
 
-  void userLogin({required String email, required String password}) async {
+  Future<void> userLogin({
+    required String username,
+    required String password,
+  }) async {
     try {
       emit(AuthFetchInProgress());
       final Map<String, dynamic> result =
-          await _authRepository.login(email: email, password: password);
-      debugPrint("result ========> $result");
-      if (!result["auth_token"]) {
-        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
-        const SnackBar(content: Text("Error"));
+          await _authRepository.login(username: username, password: password);
+      // debugPrint("result ========> $result");
+      // debugPrint("result ========> ${result['auth_token']}");
+      if (result["auth_token"] != null) {
+        String accessToken = AccessToken.fromJson(result).authToken;
+        // debugPrint("accesstoken ========> $accessToken");
+        await service.setAccessToken(accessToken);
+        // debugPrint(
+        //     "accesstoken ========> ${service.getAccessTokenFromSharedPref()}");
         emit(AuthFetchSuccess());
       } else {
-        String accessToken = AccessToken.fromJson(result).authToken;
-        await service.setAccessToken(accessToken);
+        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
+        // debugPrint("no accesstoken ========>");
+        const SnackBar(content: Text("Error"));
         emit(AuthFetchSuccess());
       }
     } catch (e) {
@@ -58,17 +66,13 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void getUser({String? accessToken}) async {
+  Future<void> getUser({String? accessToken}) async {
     try {
       emit(AuthFetchInProgress());
       final Map<String, dynamic> result =
           await _authRepository.getUser(accessToken: accessToken);
-      debugPrint("result ========> $result");
-      if (!result["id"]) {
-        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
-        const SnackBar(content: Text("Error"));
-        emit(AuthFetchSuccess());
-      } else {
+      // debugPrint("result ========> $result");
+      if (result["id"] != null) {
         var user = User(
             id: result["id"].toString(),
             email: result["email"].toString(),
@@ -76,7 +80,11 @@ class AuthCubit extends Cubit<AuthState> {
             lastName: result["last_name"].toString(),
             username: result["username"].toString());
         await service.setUserInSharedPref(user);
-        g.Get.offAll(() => SignupPage(), transition: g.Transition.upToDown);
+        g.Get.to(() => const SignupPage(), transition: g.Transition.upToDown);
+        emit(AuthFetchSuccess());
+      } else {
+        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
+        const SnackBar(content: Text("Error"));
         emit(AuthFetchSuccess());
       }
     } catch (e) {

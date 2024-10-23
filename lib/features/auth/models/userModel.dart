@@ -22,11 +22,11 @@ class User {
   String toJson() => json.encode(toMap());
 
   factory User.fromMap(Map<String, dynamic> json) => User(
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        email: json["email"],
-        id: json["id"],
-        username: json["username"],
+        firstName: json["first_name"] ?? '',
+        lastName: json["last_name"] ?? '',
+        email: json["email"] ?? '',
+        id: json["id"] ?? '',
+        username: json["username"] ?? '',
       );
 
   Map<String, dynamic> toMap() => {
