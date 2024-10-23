@@ -16,7 +16,8 @@ class AuthRemoteDataSource {
   Future<dynamic> getUser({String? accessToken}) async {
     try {
       Map<String, dynamic> result = {};
-      result = await Api.getMe(endpoint: Api.getUser, accessToken: accessToken);
+      result = await Api.getMe(
+          endpoint: Api.getSubscriber, accessToken: accessToken);
       return result;
     } catch (e) {
       throw ApiMessageAndCodeException(errorMessage: e.toString());

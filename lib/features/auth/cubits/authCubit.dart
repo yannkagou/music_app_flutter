@@ -66,6 +66,20 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> userRegister({
+    required String username,
+    required String email,
+    required String first_name,
+    required String last_name,
+    required String password,
+  }) async {
+    try {
+      emit(AuthFetchInProgress());
+    } catch (e) {
+      emit(AuthFetchFailure(e.toString()));
+    }
+  }
+
   Future<void> getUser({String? accessToken}) async {
     try {
       emit(AuthFetchInProgress());
@@ -75,11 +89,12 @@ class AuthCubit extends Cubit<AuthState> {
       if (result["id"] != null) {
         var user = User(
             id: result["id"].toString(),
-            email: result["email"].toString(),
-            firstName: result["first_name"].toString(),
-            lastName: result["last_name"].toString(),
-            username: result["username"].toString());
+            email: result["user"]["email"].toString(),
+            firstName: result["user"]["first_name"].toString(),
+            lastName: result["user"]["last_name"].toString(),
+            username: result["user"]["username"].toString());
         await service.setUserInSharedPref(user);
+        // debugPrint("user ========> ${service.getUserFromSharedPref()}");
         g.Get.to(() => const SignupPage(), transition: g.Transition.upToDown);
         emit(AuthFetchSuccess());
       } else {

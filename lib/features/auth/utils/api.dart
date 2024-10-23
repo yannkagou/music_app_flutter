@@ -35,6 +35,7 @@ class Api {
   static String login = "token/login";
   static String register = "users";
   static String getUser = "users/me";
+  static String getSubscriber = "subscribers/me";
 
   static Map<String, String> get headers => {
         "Accept": "application/json",
@@ -90,7 +91,7 @@ class Api {
         throw const SocketException(ErrorMessageKeys.noInternet);
       }
       final Dio dio = Dio();
-      String _url = "${URLS.auth}/$endpoint";
+      String _url = "${URLS.api}/$endpoint";
       debugPrint("Requested APi - $_url");
 
       debugPrint("AccessToken APi - $accessToken");
