@@ -62,8 +62,8 @@ class Api {
       debugPrint("response =====>${response.data}");
       if (response.statusCode == 500) {
         debugPrint("APi exception msg - ${response.data}");
-        // showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
-        const SnackBar(content: Text("Error"));
+        showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
+        // const SnackBar(content: Text("Error"));
         throw ApiException(response.data);
       }
       return response.data;
@@ -107,8 +107,8 @@ class Api {
       debugPrint("response =====>${response.data}");
       if (response.statusCode == 500) {
         debugPrint("APi exception msg - ${response.data}");
-        // showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
-        const SnackBar(content: Text("Error"));
+        showCustomSnackBar(Texts.ERROR, Texts.UNEXPECTED_ERROR);
+        // const SnackBar(content: Text("Error"));
         throw ApiException(response.data);
       }
       return response.data;

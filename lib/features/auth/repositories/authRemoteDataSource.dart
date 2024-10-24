@@ -23,4 +23,26 @@ class AuthRemoteDataSource {
       throw ApiMessageAndCodeException(errorMessage: e.toString());
     }
   }
+
+  Future<dynamic> register(
+      {required String username,
+      required String email,
+      required String password,
+      String? firstname,
+      String? lastname}) async {
+    try {
+      Map<String, dynamic> result = {};
+      Map<String, dynamic> body = {
+        "username": username,
+        "password": password,
+        "email": email,
+        "first_name": firstname,
+        "last_name": lastname,
+      };
+      result = await Api.post(body: body, endpoint: Api.register);
+      return result;
+    } catch (e) {
+      throw ApiMessageAndCodeException(errorMessage: e.toString());
+    }
+  }
 }

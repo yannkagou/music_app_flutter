@@ -10,8 +10,8 @@ class FormValidator {
       const SnackBar(content: Text("Error"));
       return true;
     } else if (value.length == 2 && (value[0].isEmpty || value[1].isEmpty)) {
-      // showCustomSnackBar(Texts.ERROR, Texts.ALL_FIELD_REQUIRED);
-      const SnackBar(content: Text("Error"));
+      showCustomSnackBar(Texts.ERROR, Texts.ALL_FIELD_REQUIRED);
+      // const SnackBar(content: Text("Error"));
       return true;
     }
     return false;
@@ -20,8 +20,8 @@ class FormValidator {
   static bool isAllFieldsRequired(List<String> value) {
     for (var i = 0; i < value.length; i++) {
       if (value[i].isEmpty) {
-        // showCustomSnackBar(Texts.ERROR, Texts.ALL_FIELD_REQUIRED);
-        const SnackBar(content: Text("Error"));
+        showCustomSnackBar(Texts.ERROR, Texts.ALL_FIELD_REQUIRED);
+        // const SnackBar(content: Text("Error"));
         return true;
       }
     }

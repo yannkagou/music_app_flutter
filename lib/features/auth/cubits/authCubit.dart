@@ -5,6 +5,7 @@ import 'package:client/features/auth/models/AccessToken.dart';
 import 'package:client/features/auth/models/LoginResponse.dart';
 import 'package:client/features/auth/models/userModel.dart';
 import 'package:client/features/auth/repositories/authRepository.dart';
+import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:client/features/auth/views/pages/signupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,9 +57,9 @@ class AuthCubit extends Cubit<AuthState> {
         //     "accesstoken ========> ${service.getAccessTokenFromSharedPref()}");
         emit(AuthFetchSuccess());
       } else {
-        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
+        showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
         // debugPrint("no accesstoken ========>");
-        const SnackBar(content: Text("Error"));
+        // const SnackBar(content: Text("Error"));
         emit(AuthFetchSuccess());
       }
     } catch (e) {
@@ -69,12 +70,24 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> userRegister({
     required String username,
     required String email,
-    required String first_name,
-    required String last_name,
+    required String firstname,
+    required String lastname,
     required String password,
   }) async {
     try {
       emit(AuthFetchInProgress());
+      final Map<String, dynamic> result = await _authRepository.register(
+          username: username,
+          email: email,
+          password: password,
+          firstname: firstname,
+          lastname: lastname);
+      if (result["id"] != null) {
+        g.Get.to(() => const LoginPage(), transition: g.Transition.upToDown);
+        emit(AuthFetchSuccess());
+      } else {
+        showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
+      }
     } catch (e) {
       emit(AuthFetchFailure(e.toString()));
     }
@@ -98,8 +111,8 @@ class AuthCubit extends Cubit<AuthState> {
         g.Get.to(() => const SignupPage(), transition: g.Transition.upToDown);
         emit(AuthFetchSuccess());
       } else {
-        // showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
-        const SnackBar(content: Text("Error"));
+        showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
+        // const SnackBar(content: Text("Error"));
         emit(AuthFetchSuccess());
       }
     } catch (e) {

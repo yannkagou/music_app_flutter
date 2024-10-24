@@ -3,6 +3,7 @@ import 'package:client/core/theme/theme.dart';
 import 'package:client/features/auth/cubits/authCubit.dart';
 import 'package:client/features/auth/repositories/authRepository.dart';
 import 'package:client/features/auth/views/pages/loginPage.dart';
+import 'package:client/features/home/views/pages/upload_song_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final service = SharedPreferencesServices();
+    String? accessToken = service.getAccessTokenFromSharedPref();
     return ScreenUtilInit(
         designSize: const Size(414, 896),
         builder: (BuildContext context, Widget? child) {
@@ -31,7 +34,9 @@ class MyApp extends StatelessWidget {
             child: GetMaterialApp(
               title: 'Flutter Demo',
               theme: AppTheme.darkThemeMode,
-              home: const LoginPage(),
+              home: accessToken != null
+                  ? const UploadSongPage()
+                  : const LoginPage(),
             ),
           );
         });

@@ -6,7 +6,6 @@ import 'package:client/core/ui_service/FormValidator.dart';
 import 'package:client/core/ui_service/circularProgressIndicator.dart';
 import 'package:client/core/ui_service/ui.dart';
 import 'package:client/features/auth/cubits/authCubit.dart';
-import 'package:client/features/auth/utils/errorMesageKeys.dart';
 import 'package:client/features/auth/utils/internetConnectivity.dart';
 import 'package:client/features/auth/views/pages/signupPage.dart';
 import 'package:client/features/auth/views/widgets/auth_gradient_button.dart';
@@ -52,8 +51,8 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           // TODO: implement listener
           if (state is AuthFetchFailure) {
-            // showCustomSnackBar(Texts.ERROR, state.errorMessage);
-            const SnackBar(content: Text("Error"));
+            showCustomSnackBar(Texts.ERROR, state.errorMessage);
+            // const SnackBar(content: Text("Error"));
           }
         },
         builder: (context, state) {
@@ -87,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    AuthGradientButton(text: Texts.SIGNIN, onTap: _submitForm),
+                    AuthGradientButton(text: Texts.SIGNIN, onTap: _loginForm),
                     SizedBox(
                       height: 15.h,
                     ),
@@ -123,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _submitForm() async {
+  _loginForm() async {
     FocusScope.of(context).unfocus();
     String? accessToken = service.getAccessTokenFromSharedPref();
     if (FormValidator.isEmptyFields(

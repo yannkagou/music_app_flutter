@@ -23,4 +23,19 @@ class AuthRepository {
         await _authRemoteDataSource.getUser(accessToken: accessToken);
     return result;
   }
+
+  Future<dynamic> register(
+      {required String username,
+      required String email,
+      required String password,
+      String? firstname,
+      String? lastname}) async {
+    final result = await _authRemoteDataSource.register(
+        username: username,
+        email: email,
+        password: password,
+        firstname: firstname,
+        lastname: lastname);
+    return result;
+  }
 }
