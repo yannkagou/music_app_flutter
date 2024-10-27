@@ -1,7 +1,7 @@
 import 'package:client/core/local_storage/sharedPref.dart';
 import 'package:client/core/theme/theme.dart';
 import 'package:client/features/auth/cubits/authCubit.dart';
-import 'package:client/features/auth/models/userModel.dart';
+// import 'package:client/features/auth/models/userModel.dart';
 import 'package:client/features/auth/repositories/authRepository.dart';
 import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:client/features/home/views/pages/upload_song_page.dart';
