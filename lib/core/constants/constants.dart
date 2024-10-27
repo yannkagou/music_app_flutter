@@ -15,10 +15,17 @@ class Texts {
   static const String ALREADY_ACCOUNT = "Already have an account? ";
   static const String NO_ACCOUNT = "Don't have an account? ";
   static const String ERROR = "Error";
-  static const String UNEXPECTED_ERROR = "omethin went wrong! Try again later.";
+  static const String UNEXPECTED_ERROR =
+      "Something went wrong! Try again later.";
   static const String INVALID_CREDENTIALS =
       "Sorry ! Email or Password is wrong";
   static const String ALL_FIELD_REQUIRED = "All fields are required";
+  static const String UPLOAD_SONG = "Upload Song";
+  static const String SELECT_SONG_THUMBNAIL =
+      "Select the thumbnail for your Song";
+  static const String PICK_SONG = "Pick Song";
+  static const String SONG_NAME = "Song Name";
+  static const String ARTIST = "Artist";
 }
 
 class URLS {

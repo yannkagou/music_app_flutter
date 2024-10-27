@@ -1,6 +1,7 @@
 import 'package:client/core/local_storage/sharedPref.dart';
 import 'package:client/core/theme/theme.dart';
 import 'package:client/features/auth/cubits/authCubit.dart';
+import 'package:client/features/auth/models/userModel.dart';
 import 'package:client/features/auth/repositories/authRepository.dart';
 import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:client/features/home/views/pages/upload_song_page.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final service = SharedPreferencesServices();
-    String? accessToken = service.getAccessTokenFromSharedPref();
+    final getUser = service.getUserFromSharedPref();
+    debugPrint("The user ======> $getUser");
     return ScreenUtilInit(
         designSize: const Size(414, 896),
         builder: (BuildContext context, Widget? child) {
@@ -34,9 +36,8 @@ class MyApp extends StatelessWidget {
             child: GetMaterialApp(
               title: 'Flutter Demo',
               theme: AppTheme.darkThemeMode,
-              home: accessToken != null
-                  ? const UploadSongPage()
-                  : const LoginPage(),
+              home:
+                  getUser != null ? const UploadSongPage() : const LoginPage(),
             ),
           );
         });

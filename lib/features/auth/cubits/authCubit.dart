@@ -7,6 +7,7 @@ import 'package:client/features/auth/models/userModel.dart';
 import 'package:client/features/auth/repositories/authRepository.dart';
 import 'package:client/features/auth/views/pages/loginPage.dart';
 import 'package:client/features/auth/views/pages/signupPage.dart';
+import 'package:client/features/home/views/pages/upload_song_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart' as g;
@@ -108,7 +109,8 @@ class AuthCubit extends Cubit<AuthState> {
             username: result["user"]["username"].toString());
         await service.setUserInSharedPref(user);
         // debugPrint("user ========> ${service.getUserFromSharedPref()}");
-        g.Get.to(() => const SignupPage(), transition: g.Transition.upToDown);
+        g.Get.to(() => const UploadSongPage(),
+            transition: g.Transition.upToDown);
         emit(AuthFetchSuccess());
       } else {
         showCustomSnackBar(Texts.ERROR, Texts.INVALID_CREDENTIALS);
